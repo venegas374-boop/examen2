@@ -28,7 +28,74 @@ export interface OpcionesApi {
  *     Si el estado es 401 (y la ruta no es /login): await olvidarSesion() y router.replace('/login').
  *  8. En cualquier otro caso, devolver el cuerpo JSON.
  */
-export async function api<T = unknown>(ruta: string, opciones: OpcionesApi = {}): Promise<T> {
-  void [ErrorApi, obtenerToken, olvidarSesion, router, BASE_URL, TIEMPO_MAXIMO_MS, ruta, opciones];
-  throw new Error('TODO [M1] api() sin implementar');
+export async function api<T = unknown>(
+  ruta: string,
+  opciones: OpcionesApi = {}
+): Promise<T> {
+  const url = new URL(BASE_URL + ruta);
+
+  for (const [clave, valor] of Object.entries(opciones.params ?? {})) {
+    if (valor !== undefined && valor !== '') {
+      url.searchParams.set(clave, String(valor));
+    }
+  }
+
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
+  };
+
+  const token = obtenerToken();
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  if (opciones.body !== undefined) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  const controller = new AbortController();
+
+  const temporizador = setTimeout(
+    () => controller.abort(),
+    TIEMPO_MAXIMO_MS
+  );
+
+  try {
+    const response = await fetch(url.toString(), {
+      method: opciones.method ?? 'GET',
+      headers,
+      body: opciones.body !== undefined
+        ? JSON.stringify(opciones.body)
+        : undefined,
+      signal: controller.signal,
+    });
+
+    if (response.status === 204) {
+      return null as T;
+    }
+
+    const cuerpoJson = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      if (response.status === 401 && ruta !== '/login') {
+        await olvidarSesion();
+        await router.replace('/login');
+      }
+
+      throw new ErrorApi(response.status, cuerpoJson);
+    }
+
+    return cuerpoJson as T;
+  } catch (error) {
+    if (error instanceof ErrorApi) {
+      throw error;
+    }
+
+    throw new ErrorApi(0, {
+      mensaje: 'No fue posible conectar con la API.',
+    });
+  } finally {
+    clearTimeout(temporizador);
+  }
 }
