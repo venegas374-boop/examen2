@@ -36,8 +36,10 @@
         </provider>
     </application>
 
-    <!-- Permissions -->
+   <!-- Permissions -->
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- TODO [M7] Declare aquí los permisos de las capacidades nativas que usa la app (estado de la red y vibración). -->
+<uses-permission android:name="android.permission.INTERNET" />
+<!-- TODO [M7] Declare aquí los permisos de las capacidades nativas que usa la app (estado de la red y vibración). -->
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.VIBRATE" />
 </manifest>
