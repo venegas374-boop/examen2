@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "cr.ac.ucr.if0009.examen"
+    namespace = "cr.ac.ucr.if0009.c5h636"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "cr.ac.ucr.if0009.examen"
+        applicationId "cr.ac.ucr.if0009.c5h636"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

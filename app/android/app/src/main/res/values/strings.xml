@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Préstamos Móvil</string>
-    <string name="title_activity_main">Préstamos Móvil</string>
-    <string name="package_name">cr.ac.ucr.if0009.examen</string>
-    <string name="custom_url_scheme">cr.ac.ucr.if0009.examen</string>
+    <string name="app_name">Préstamos Morales</string>
+    <string name="title_activity_main">Préstamos Morales</string>
+    <string name="package_name">cr.ac.ucr.if0009.c5h636</string>
+    <string name="custom_url_scheme">cr.ac.ucr.if0009.c5h636</string>
 </resources>
